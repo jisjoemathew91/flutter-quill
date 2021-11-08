@@ -643,6 +643,8 @@ class RawEditorState extends EditorState
             renderEditor.localToGlobal(const Offset(0, 0), ancestor: viewport);
         final offsetInViewport = _scrollController.offset + editorOffset.dy;
 
+        print('offsetInViewport ==> $offsetInViewport');
+
         final offset = renderEditor.getOffsetToRevealCursor(
           _scrollController.position.viewportDimension,
           _scrollController.offset,
