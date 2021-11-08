@@ -46,6 +46,7 @@ class RawEditor extends StatefulWidget {
     this.toolbarOptions,
     this.showSelectionHandles,
     bool? showCursor,
+    bool? autoScrollToSelection,
     this.cursorStyle,
     this.textCapitalization,
     this.maxHeight,
@@ -65,6 +66,7 @@ class RawEditor extends StatefulWidget {
         assert(maxHeight == null || minHeight == null || maxHeight >= minHeight,
             'maxHeight cannot be null'),
         showCursor = showCursor ?? true,
+        autoScrollToSelection = autoScrollToSelection ?? false,
         super(key: key);
 
   final QuillController controller;
@@ -79,6 +81,7 @@ class RawEditor extends StatefulWidget {
   final ToolbarOptions toolbarOptions;
   final bool showSelectionHandles;
   final bool showCursor;
+  final bool autoScrollToSelection;
   final CursorStyle cursorStyle;
   final TextCapitalization textCapitalization;
   final double? maxHeight;
@@ -93,6 +96,7 @@ class RawEditor extends StatefulWidget {
   final ScrollPhysics? scrollPhysics;
   final EmbedBuilder embedBuilder;
   final CustomStyleBuilder? customStyleBuilder;
+
   @override
   State<StatefulWidget> createState() => RawEditorState();
 }
@@ -127,6 +131,7 @@ class RawEditorState extends EditorState
   // Focus
   bool _didAutoFocus = false;
   FocusAttachment? _focusAttachment;
+
   bool get _hasFocus => widget.focusNode.hasFocus;
 
   DefaultStyles? _styles;
@@ -170,6 +175,7 @@ class RawEditorState extends EditorState
     );
 
     if (widget.scrollable) {
+      _scrollToSelection();
       final baselinePadding =
           EdgeInsets.only(top: _styles!.paragraph!.verticalSpacing.item1);
       child = BaselineProxy(
@@ -604,6 +610,46 @@ class RawEditorState extends EditorState
           _scrollController.offset,
           offsetInViewport,
         );
+
+        if (offset != null) {
+          _scrollController.animateTo(
+            math.min(offset, _scrollController.position.maxScrollExtent),
+            duration: const Duration(milliseconds: 100),
+            curve: Curves.fastOutSlowIn,
+          );
+        }
+      }
+    });
+  }
+
+  void _scrollToSelection() {
+    if (!widget.autoScrollToSelection || !widget.scrollable) {
+      return;
+    }
+
+    _showCaretOnScreenScheduled = true;
+    SchedulerBinding.instance!.addPostFrameCallback((_) {
+      if (widget.scrollable || _scrollController.hasClients) {
+        _showCaretOnScreenScheduled = false;
+
+        final renderEditor = getRenderEditor();
+        if (renderEditor == null) {
+          print('!!! renderEditor is NULL');
+          return;
+        }
+
+        final viewport = RenderAbstractViewport.of(renderEditor);
+        final editorOffset =
+            renderEditor.localToGlobal(const Offset(0, 0), ancestor: viewport);
+        final offsetInViewport = _scrollController.offset + editorOffset.dy;
+
+        final offset = renderEditor.getOffsetToRevealCursor(
+          _scrollController.position.viewportDimension,
+          _scrollController.offset,
+          offsetInViewport,
+        );
+
+        print('offset ==> $offset');
 
         if (offset != null) {
           _scrollController.animateTo(

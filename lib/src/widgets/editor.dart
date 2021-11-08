@@ -235,6 +235,7 @@ class QuillEditor extends StatefulWidget {
       required this.readOnly,
       required this.expands,
       this.showCursor,
+      this.autoScrollToSelection,
       this.paintCursorAboveText,
       this.placeholder,
       this.enableInteractiveSelection = true,
@@ -281,6 +282,7 @@ class QuillEditor extends StatefulWidget {
   final EdgeInsetsGeometry padding;
   final bool autoFocus;
   final bool? showCursor;
+  final bool? autoScrollToSelection;
   final bool? paintCursorAboveText;
   final bool readOnly;
   final String? placeholder;
@@ -293,6 +295,7 @@ class QuillEditor extends StatefulWidget {
   final Brightness keyboardAppearance;
   final ScrollPhysics? scrollPhysics;
   final ValueChanged<String>? onLaunchUrl;
+
   // Returns whether gesture is handled
   final bool Function(
       TapDownDetails details, TextPosition Function(Offset offset))? onTapDown;
@@ -309,6 +312,7 @@ class QuillEditor extends StatefulWidget {
   // Returns whether gesture is handled
   final bool Function(LongPressMoveUpdateDetails details,
       TextPosition Function(Offset offset))? onSingleLongTapMoveUpdate;
+
   // Returns whether gesture is handled
   final bool Function(
           LongPressEndDetails details, TextPosition Function(Offset offset))?
@@ -399,6 +403,7 @@ class _QuillEditorState extends State<QuillEditor>
         theme.platform == TargetPlatform.iOS ||
             theme.platform == TargetPlatform.android,
         widget.showCursor,
+        widget.autoScrollToSelection,
         CursorStyle(
           color: cursorColor,
           backgroundColor: Colors.grey,
