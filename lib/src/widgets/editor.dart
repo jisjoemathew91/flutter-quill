@@ -1104,16 +1104,10 @@ class RenderEditor extends RenderEditableContainerBox
     final caretBottom =
         endpoint.point.dy + kMargin + offsetInViewport + scrollBottomInset;
     double? dy;
-    print('caretTop ==> $caretTop');
-    print('scrollOffset ==> $scrollOffset');
-    print('caretBottom ==> $caretBottom');
-    print('viewportHeight ==> $viewportHeight');
     if (caretTop < scrollOffset) {
-      print('1');
       dy = caretTop;
     } else if (caretBottom > scrollOffset + viewportHeight) {
-      print('2');
-      dy = caretBottom;
+      dy = caretTop;
     }
     if (dy == null) {
       return null;
