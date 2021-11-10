@@ -1112,7 +1112,7 @@ class RenderEditor extends RenderEditableContainerBox
       print('1');
       dy = caretTop;
     } else if (caretBottom > scrollOffset + (viewportHeight - 100)) {
-      print('1');
+      print('2');
       dy = caretBottom - (viewportHeight - 100);
     }
     if (dy == null) {
