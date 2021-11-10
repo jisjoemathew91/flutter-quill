@@ -1112,7 +1112,7 @@ class RenderEditor extends RenderEditableContainerBox
     if (dy == null) {
       return null;
     }
-    return math.max(dy, 0);
+    return math.max(caretTop, 0);
   }
 
   @override
