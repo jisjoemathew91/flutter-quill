@@ -1104,6 +1104,12 @@ class RenderEditor extends RenderEditableContainerBox
     final caretBottom =
         endpoint.point.dy + kMargin + offsetInViewport + scrollBottomInset;
     double? dy;
+    print('selection.extentOffset ==> ${selection.extentOffset}');
+    print('child.getContainer().documentOffset ==> ${child.getContainer().documentOffset}');
+    print('caretTop ==> $caretTop');
+    print('scrollOffset ==> $scrollOffset');
+    print('caretBottom ==> $caretBottom');
+    print('viewportHeight ==> $viewportHeight');
     if (caretTop < scrollOffset) {
       dy = caretTop;
     } else if (caretBottom > scrollOffset + viewportHeight) {
@@ -1112,7 +1118,7 @@ class RenderEditor extends RenderEditableContainerBox
     if (dy == null) {
       return null;
     }
-    return math.max(caretTop, 0);
+    return math.max(dy, 0);
   }
 
   @override
