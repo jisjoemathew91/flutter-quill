@@ -634,7 +634,6 @@ class RawEditorState extends EditorState
 
         final renderEditor = getRenderEditor();
         if (renderEditor == null) {
-          print('!!! renderEditor is NULL');
           return;
         }
 
@@ -648,9 +647,6 @@ class RawEditorState extends EditorState
           _scrollController.offset,
           offsetInViewport,
         );
-
-        print('offset ==> $offset');
-        print('===========================================');
 
         if (offset != null) {
           _scrollController.animateTo(
