@@ -1097,7 +1097,7 @@ class RenderEditor extends RenderEditableContainerBox
     final caretTop = endpoint.point.dy -
         child.preferredLineHeight(TextPosition(
             offset:
-                selection.extentOffset - child.getContainer().documentOffset)) -
+            selection.extentOffset - child.getContainer().documentOffset)) -
         kMargin +
         offsetInViewport +
         scrollBottomInset;
@@ -1107,12 +1107,43 @@ class RenderEditor extends RenderEditableContainerBox
     if (caretTop < scrollOffset) {
       dy = caretTop;
     } else if (caretBottom > scrollOffset + viewportHeight) {
-      dy = caretTop;
+      dy = caretBottom - viewportHeight;
     }
     if (dy == null) {
-      return math.max(caretTop, 0);
+      return null;
     }
     return math.max(dy, 0);
+  }
+
+  double? getOffsetToScroll(
+      double viewportHeight, double scrollOffset, double offsetInViewport) {
+    final endpoints = getEndpointsForSelection(selection);
+
+    // when we drag the right handle, we should get the last point
+    TextSelectionPoint endpoint;
+    if (selection.isCollapsed) {
+      endpoint = endpoints.first;
+    } else {
+      if (selection is DragTextSelection) {
+        endpoint = (selection as DragTextSelection).first
+            ? endpoints.first
+            : endpoints.last;
+      } else {
+        endpoint = endpoints.first;
+      }
+    }
+
+    final child = childAtPosition(selection.extent);
+    const kMargin = 8.0;
+
+    final caretTop = endpoint.point.dy -
+        child.preferredLineHeight(TextPosition(
+            offset:
+                selection.extentOffset - child.getContainer().documentOffset)) -
+        kMargin +
+        offsetInViewport +
+        scrollBottomInset;
+    return math.max(caretTop, 0);
   }
 
   @override
