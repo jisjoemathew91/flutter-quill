@@ -235,6 +235,7 @@ class QuillEditor extends StatefulWidget {
       required this.readOnly,
       required this.expands,
       this.showCursor,
+      this.autoScrollToSelection,
       this.paintCursorAboveText,
       this.placeholder,
       this.enableInteractiveSelection = true,
@@ -281,6 +282,7 @@ class QuillEditor extends StatefulWidget {
   final EdgeInsetsGeometry padding;
   final bool autoFocus;
   final bool? showCursor;
+  final bool? autoScrollToSelection;
   final bool? paintCursorAboveText;
   final bool readOnly;
   final String? placeholder;
@@ -293,6 +295,7 @@ class QuillEditor extends StatefulWidget {
   final Brightness keyboardAppearance;
   final ScrollPhysics? scrollPhysics;
   final ValueChanged<String>? onLaunchUrl;
+
   // Returns whether gesture is handled
   final bool Function(
       TapDownDetails details, TextPosition Function(Offset offset))? onTapDown;
@@ -309,6 +312,7 @@ class QuillEditor extends StatefulWidget {
   // Returns whether gesture is handled
   final bool Function(LongPressMoveUpdateDetails details,
       TextPosition Function(Offset offset))? onSingleLongTapMoveUpdate;
+
   // Returns whether gesture is handled
   final bool Function(
           LongPressEndDetails details, TextPosition Function(Offset offset))?
@@ -399,6 +403,7 @@ class _QuillEditorState extends State<QuillEditor>
         theme.platform == TargetPlatform.iOS ||
             theme.platform == TargetPlatform.android,
         widget.showCursor,
+        widget.autoScrollToSelection,
         CursorStyle(
           color: cursorColor,
           backgroundColor: Colors.grey,
@@ -1092,7 +1097,7 @@ class RenderEditor extends RenderEditableContainerBox
     final caretTop = endpoint.point.dy -
         child.preferredLineHeight(TextPosition(
             offset:
-                selection.extentOffset - child.getContainer().documentOffset)) -
+            selection.extentOffset - child.getContainer().documentOffset)) -
         kMargin +
         offsetInViewport +
         scrollBottomInset;
@@ -1108,6 +1113,37 @@ class RenderEditor extends RenderEditableContainerBox
       return null;
     }
     return math.max(dy, 0);
+  }
+
+  double? getOffsetToScroll(
+      double viewportHeight, double scrollOffset, double offsetInViewport) {
+    final endpoints = getEndpointsForSelection(selection);
+
+    // when we drag the right handle, we should get the last point
+    TextSelectionPoint endpoint;
+    if (selection.isCollapsed) {
+      endpoint = endpoints.first;
+    } else {
+      if (selection is DragTextSelection) {
+        endpoint = (selection as DragTextSelection).first
+            ? endpoints.first
+            : endpoints.last;
+      } else {
+        endpoint = endpoints.first;
+      }
+    }
+
+    final child = childAtPosition(selection.extent);
+    const kMargin = 8.0;
+
+    final caretTop = endpoint.point.dy -
+        child.preferredLineHeight(TextPosition(
+            offset:
+                selection.extentOffset - child.getContainer().documentOffset)) -
+        kMargin +
+        offsetInViewport +
+        scrollBottomInset;
+    return math.max(caretTop, 0);
   }
 
   @override
