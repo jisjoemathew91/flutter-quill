@@ -109,7 +109,7 @@ class RawEditorState extends EditorState
         RawEditorStateKeyboardMixin,
         RawEditorStateTextInputClientMixin,
         RawEditorStateSelectionDelegateMixin {
-  final GlobalKey _editorKey = GlobalKey();
+  // final GlobalKey _editorKey = GlobalKey();
 
   // Keyboard
   late KeyboardEventHandler _keyboardListener;
@@ -159,7 +159,7 @@ class RawEditorState extends EditorState
       link: _toolbarLayerLink,
       child: Semantics(
         child: _Editor(
-          key: _editorKey,
+          key: widget.controller.editorKey,
           document: _doc,
           selection: widget.controller.selection,
           hasFocus: _hasFocus,
@@ -187,7 +187,7 @@ class RawEditorState extends EditorState
           viewportBuilder: (_, offset) => CompositedTransformTarget(
             link: _toolbarLayerLink,
             child: _Editor(
-              key: _editorKey,
+              key: widget.controller.editorKey,
               offset: offset,
               document: widget.controller.document,
               selection: widget.controller.selection,
@@ -661,7 +661,8 @@ class RawEditorState extends EditorState
 
   @override
   RenderEditor? getRenderEditor() {
-    return _editorKey.currentContext?.findRenderObject() as RenderEditor?;
+    return widget.controller.editorKey.currentContext?.findRenderObject()
+        as RenderEditor?;
   }
 
   @override

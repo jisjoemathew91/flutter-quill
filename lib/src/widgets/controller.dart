@@ -25,6 +25,9 @@ class QuillController extends ChangeNotifier {
     );
   }
 
+  /// Access to current Editor
+  final GlobalKey editorKey = GlobalKey();
+
   /// Document managed by this controller.
   final Document document;
 
