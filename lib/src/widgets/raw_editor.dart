@@ -175,7 +175,9 @@ class RawEditorState extends EditorState
     );
 
     if (widget.scrollable) {
-      _scrollToSelection();
+      if(!widget.controller.disableHighlightScrolling) {
+        _scrollToSelection();
+      }
       final baselinePadding =
           EdgeInsets.only(top: _styles!.paragraph!.verticalSpacing.item1);
       child = BaselineProxy(

@@ -39,6 +39,9 @@ class QuillController extends ChangeNotifier {
   TextSelection get selection => _selection;
   TextSelection _selection;
 
+  /// Handle highlight scrolling after the editor is rendered
+  bool disableHighlightScrolling = false;
+
   /// Store any styles attribute that got toggled by the tap of a button
   /// and that has not been applied yet.
   /// It gets reset after each format action within the [document].
