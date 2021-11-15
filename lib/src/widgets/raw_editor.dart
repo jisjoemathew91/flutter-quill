@@ -186,22 +186,37 @@ class RawEditorState extends EditorState
         child: QuillSingleChildScrollView(
           controller: _scrollController,
           physics: widget.scrollPhysics,
-          viewportBuilder: (_, offset) => CompositedTransformTarget(
-            link: _toolbarLayerLink,
-            child: _Editor(
-              key: widget.controller.editorKey,
-              offset: offset,
-              document: widget.controller.document,
-              selection: widget.controller.selection,
-              hasFocus: _hasFocus,
-              textDirection: _textDirection,
-              startHandleLayerLink: _startHandleLayerLink,
-              endHandleLayerLink: _endHandleLayerLink,
-              onSelectionChanged: _handleSelectionChanged,
-              scrollBottomInset: widget.scrollBottomInset,
-              padding: widget.padding,
-              children: _buildChildren(_doc, context),
-            ),
+          viewportBuilder: (_, offset) => Stack(
+            children: [
+              Positioned.fill(
+                child: CompositedTransformTarget(
+                  link: _toolbarLayerLink,
+                  child: _Editor(
+                    key: widget.controller.editorKey,
+                    offset: offset,
+                    document: widget.controller.document,
+                    selection: widget.controller.selection,
+                    hasFocus: _hasFocus,
+                    textDirection: _textDirection,
+                    startHandleLayerLink: _startHandleLayerLink,
+                    endHandleLayerLink: _endHandleLayerLink,
+                    onSelectionChanged: _handleSelectionChanged,
+                    scrollBottomInset: widget.scrollBottomInset,
+                    padding: widget.padding,
+                    children: _buildChildren(_doc, context),
+                  ),
+                ),
+              ),
+              Positioned(
+                top: 20,
+                left: 30,
+                child: Container(
+                  height: 30,
+                  width: 30,
+                  color: Colors.blue,
+                ),
+              )
+            ],
           ),
         ),
       );

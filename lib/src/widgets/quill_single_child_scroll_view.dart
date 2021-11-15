@@ -67,20 +67,7 @@ class QuillSingleChildScrollView extends StatelessWidget {
         );
       },
     );
-    return Stack(
-      children: [
-        Positioned.fill(child: scrollable),
-        Positioned(
-          top: 20,
-          left: 30,
-          child: Container(
-            height: 30,
-            width: 30,
-            color: Colors.blue,
-          ),
-        )
-      ],
-    );
+    return scrollable;
   }
 }
 
