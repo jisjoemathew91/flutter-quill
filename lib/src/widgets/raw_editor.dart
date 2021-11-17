@@ -37,6 +37,7 @@ class RawEditor extends StatefulWidget {
     this.controller,
     this.focusNode,
     this.scrollController,
+    this.parentScrollController,
     this.scrollable,
     this.scrollBottomInset,
     this.padding,
@@ -72,6 +73,7 @@ class RawEditor extends StatefulWidget {
   final QuillController controller;
   final FocusNode focusNode;
   final ScrollController scrollController;
+  final ScrollController? parentScrollController;
   final bool scrollable;
   final double scrollBottomInset;
   final EdgeInsetsGeometry padding;
@@ -175,7 +177,7 @@ class RawEditorState extends EditorState
     );
 
     if (widget.scrollable) {
-      if(!widget.controller.disableHighlightScrolling) {
+      if (!widget.controller.disableHighlightScrolling) {
         _scrollToSelection();
       }
       final baselinePadding =
@@ -188,19 +190,32 @@ class RawEditorState extends EditorState
           physics: widget.scrollPhysics,
           viewportBuilder: (_, offset) => CompositedTransformTarget(
             link: _toolbarLayerLink,
-            child: _Editor(
-              key: widget.controller.editorKey,
-              offset: offset,
-              document: widget.controller.document,
-              selection: widget.controller.selection,
-              hasFocus: _hasFocus,
-              textDirection: _textDirection,
-              startHandleLayerLink: _startHandleLayerLink,
-              endHandleLayerLink: _endHandleLayerLink,
-              onSelectionChanged: _handleSelectionChanged,
-              scrollBottomInset: widget.scrollBottomInset,
-              padding: widget.padding,
-              children: _buildChildren(_doc, context),
+            child: Stack(
+              children: [
+                _Editor(
+                  key: widget.controller.editorKey,
+                  offset: offset,
+                  document: widget.controller.document,
+                  selection: widget.controller.selection,
+                  hasFocus: _hasFocus,
+                  textDirection: _textDirection,
+                  startHandleLayerLink: _startHandleLayerLink,
+                  endHandleLayerLink: _endHandleLayerLink,
+                  onSelectionChanged: _handleSelectionChanged,
+                  scrollBottomInset: widget.scrollBottomInset,
+                  padding: widget.padding,
+                  children: _buildChildren(_doc, context),
+                ),
+                Positioned(
+                  top: 30,
+                  left: 30,
+                  child: Container(
+                    height: 30,
+                    width: 30,
+                    color: Colors.blue,
+                  ),
+                ),
+              ],
             ),
           ),
         ),

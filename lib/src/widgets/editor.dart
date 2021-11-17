@@ -234,6 +234,7 @@ class QuillEditor extends StatefulWidget {
       required this.autoFocus,
       required this.readOnly,
       required this.expands,
+      this.parentScrollController,
       this.showCursor,
       this.autoScrollToSelection,
       this.paintCursorAboveText,
@@ -277,6 +278,7 @@ class QuillEditor extends StatefulWidget {
   final QuillController controller;
   final FocusNode focusNode;
   final ScrollController scrollController;
+  final ScrollController? parentScrollController;
   final bool scrollable;
   final double scrollBottomInset;
   final EdgeInsetsGeometry padding;
@@ -388,6 +390,7 @@ class _QuillEditorState extends State<QuillEditor>
         widget.controller,
         widget.focusNode,
         widget.scrollController,
+        widget.parentScrollController,
         widget.scrollable,
         widget.scrollBottomInset,
         widget.padding,
@@ -1097,7 +1100,7 @@ class RenderEditor extends RenderEditableContainerBox
     final caretTop = endpoint.point.dy -
         child.preferredLineHeight(TextPosition(
             offset:
-            selection.extentOffset - child.getContainer().documentOffset)) -
+                selection.extentOffset - child.getContainer().documentOffset)) -
         kMargin +
         offsetInViewport +
         scrollBottomInset;
