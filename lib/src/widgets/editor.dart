@@ -753,6 +753,14 @@ class RenderEditor extends RenderEditableContainerBox
     return boxParentData.offset + localOffsetForCaret;
   }
 
+  Offset getOffsetForTextPosition(TextPosition position) {
+    final child = childAtPosition(position);
+    final childPosition = child.globalToLocalPosition(position);
+    final boxParentData = child.parentData as BoxParentData;
+    final localOffsetForCaret = child.getOffsetForCaret(childPosition);
+    return boxParentData.offset + localOffsetForCaret;
+  }
+
   void setDocument(Document doc) {
     if (document == doc) {
       return;
