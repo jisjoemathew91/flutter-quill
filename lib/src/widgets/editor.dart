@@ -234,7 +234,6 @@ class QuillEditor extends StatefulWidget {
       required this.autoFocus,
       required this.readOnly,
       required this.expands,
-      this.parentScrollController,
       this.showCursor,
       this.autoScrollToSelection,
       this.paintCursorAboveText,
@@ -255,6 +254,7 @@ class QuillEditor extends StatefulWidget {
       this.onSingleLongTapEnd,
       this.embedBuilder = _defaultEmbedBuilder,
       this.customStyleBuilder,
+      this.overlays = const [],
       Key? key});
 
   factory QuillEditor.basic({
@@ -278,7 +278,6 @@ class QuillEditor extends StatefulWidget {
   final QuillController controller;
   final FocusNode focusNode;
   final ScrollController scrollController;
-  final ScrollController? parentScrollController;
   final bool scrollable;
   final double scrollBottomInset;
   final EdgeInsetsGeometry padding;
@@ -297,6 +296,7 @@ class QuillEditor extends StatefulWidget {
   final Brightness keyboardAppearance;
   final ScrollPhysics? scrollPhysics;
   final ValueChanged<String>? onLaunchUrl;
+  final List<Positioned> overlays;
 
   // Returns whether gesture is handled
   final bool Function(
@@ -390,7 +390,6 @@ class _QuillEditorState extends State<QuillEditor>
         widget.controller,
         widget.focusNode,
         widget.scrollController,
-        widget.parentScrollController,
         widget.scrollable,
         widget.scrollBottomInset,
         widget.padding,
@@ -429,6 +428,7 @@ class _QuillEditorState extends State<QuillEditor>
         widget.scrollPhysics,
         widget.embedBuilder,
         widget.customStyleBuilder,
+        widget.overlays,
       ),
     );
   }

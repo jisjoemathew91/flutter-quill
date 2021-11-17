@@ -37,7 +37,6 @@ class RawEditor extends StatefulWidget {
     this.controller,
     this.focusNode,
     this.scrollController,
-    this.parentScrollController,
     this.scrollable,
     this.scrollBottomInset,
     this.padding,
@@ -62,6 +61,7 @@ class RawEditor extends StatefulWidget {
     this.scrollPhysics,
     this.embedBuilder,
     this.customStyleBuilder,
+    this.overlays,
   )   : assert(maxHeight == null || maxHeight > 0, 'maxHeight cannot be null'),
         assert(minHeight == null || minHeight >= 0, 'minHeight cannot be null'),
         assert(maxHeight == null || minHeight == null || maxHeight >= minHeight,
@@ -73,7 +73,6 @@ class RawEditor extends StatefulWidget {
   final QuillController controller;
   final FocusNode focusNode;
   final ScrollController scrollController;
-  final ScrollController? parentScrollController;
   final bool scrollable;
   final double scrollBottomInset;
   final EdgeInsetsGeometry padding;
@@ -98,6 +97,7 @@ class RawEditor extends StatefulWidget {
   final ScrollPhysics? scrollPhysics;
   final EmbedBuilder embedBuilder;
   final CustomStyleBuilder? customStyleBuilder;
+  final List<Positioned> overlays;
 
   @override
   State<StatefulWidget> createState() => RawEditorState();
@@ -206,15 +206,7 @@ class RawEditorState extends EditorState
                   padding: widget.padding,
                   children: _buildChildren(_doc, context),
                 ),
-                Positioned(
-                  top: 30,
-                  left: 30,
-                  child: Container(
-                    height: 30,
-                    width: 30,
-                    color: Colors.blue,
-                  ),
-                ),
+                ...widget.overlays,
               ],
             ),
           ),
