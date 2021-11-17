@@ -190,33 +190,19 @@ class RawEditorState extends EditorState
           physics: widget.scrollPhysics,
           viewportBuilder: (_, offset) => CompositedTransformTarget(
             link: _toolbarLayerLink,
-            child: Stack(
-              children: [
-                _Editor(
-                  key: widget.controller.editorKey,
-                  offset: offset,
-                  document: widget.controller.document,
-                  selection: widget.controller.selection,
-                  hasFocus: _hasFocus,
-                  textDirection: _textDirection,
-                  startHandleLayerLink: _startHandleLayerLink,
-                  endHandleLayerLink: _endHandleLayerLink,
-                  onSelectionChanged: _handleSelectionChanged,
-                  scrollBottomInset: widget.scrollBottomInset,
-                  padding: widget.padding,
-                  children: _buildChildren(_doc, context),
-                ),
-                ...widget.overlays,
-                Positioned(
-                  left: 100,
-                  top: 400,
-                  child: Container(
-                    height: 30,
-                    width: 50,
-                    color: Colors.red,
-                  ),
-                )
-              ],
+            child: _Editor(
+              key: widget.controller.editorKey,
+              offset: offset,
+              document: widget.controller.document,
+              selection: widget.controller.selection,
+              hasFocus: _hasFocus,
+              textDirection: _textDirection,
+              startHandleLayerLink: _startHandleLayerLink,
+              endHandleLayerLink: _endHandleLayerLink,
+              onSelectionChanged: _handleSelectionChanged,
+              scrollBottomInset: widget.scrollBottomInset,
+              padding: widget.padding,
+              children: _buildChildren(_doc, context),
             ),
           ),
         ),
