@@ -207,6 +207,14 @@ class RawEditorState extends EditorState
                   children: _buildChildren(_doc, context),
                 ),
                 ...widget.overlays,
+                Align(
+                  alignment: Alignment.bottomCenter,
+                  child: Container(
+                    height: 30,
+                    width: 50,
+                    color: Colors.red,
+                  ),
+                )
               ],
             ),
           ),
