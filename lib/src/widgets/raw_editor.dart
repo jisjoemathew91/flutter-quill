@@ -193,7 +193,7 @@ class RawEditorState extends EditorState
             child: Stack(
               children: [
                 Padding(
-                  padding: const EdgeInsets.only(top: 8),
+                  padding: const EdgeInsets.only(top: 20),
                   child: _Editor(
                     key: widget.controller.editorKey,
                     offset: offset,
