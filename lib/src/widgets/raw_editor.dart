@@ -555,7 +555,8 @@ class RawEditorState extends EditorState
 
       _selectionOverlay = EditorTextSelectionOverlay(
         textEditingValue,
-        false,
+        // false,
+        true,
         context,
         widget,
         _toolbarLayerLink,
