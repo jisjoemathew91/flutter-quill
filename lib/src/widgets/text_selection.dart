@@ -78,6 +78,7 @@ class EditorTextSelectionOverlay {
 
     _toolbarController = AnimationController(
         duration: const Duration(milliseconds: 150), vsync: overlay);
+    showHandles();
   }
 
   TextEditingValue value;
