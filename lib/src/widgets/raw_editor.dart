@@ -466,8 +466,9 @@ class RawEditorState extends EditorState
   }
 
   bool _shouldShowSelectionHandles() {
-    return widget.showSelectionHandles &&
-        !widget.controller.selection.isCollapsed;
+    return true;
+    // return widget.showSelectionHandles &&
+    //     !widget.controller.selection.isCollapsed;
   }
 
   @override
