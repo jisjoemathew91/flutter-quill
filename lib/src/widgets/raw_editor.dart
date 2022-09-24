@@ -797,6 +797,16 @@ class RawEditorState extends EditorState
   void selectAll(SelectionChangedCause cause) {
     // TODO: implement selectAll
   }
+
+  @override
+  void insertTextPlaceholder(Size size) {
+    // TODO: implement insertTextPlaceholder
+  }
+
+  @override
+  void removeTextPlaceholder() {
+    // TODO: implement removeTextPlaceholder
+  }
 }
 
 class _Editor extends MultiChildRenderObjectWidget {
